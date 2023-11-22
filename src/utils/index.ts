@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { UserRoles } from '../types';
 
-export const APPNAME = "Starlit Child Ghana"
+export const APPNAME = "VNK"
 
 export const createError = (code: number, message: string) => {
     const error = new Error() as any;
