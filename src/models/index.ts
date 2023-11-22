@@ -1,0 +1,8 @@
+export { default as USER } from "./user.model"
+export { default as RESIDENT } from "./resident.model"
+export { default as VISITOR } from "./visitor.model"
+export { default as ROOM } from "./room.model"
+export { default as KEY } from "./key.model"
+export { default as FACILITY } from "./facility.model"
+export { default as VISITLOG } from "./visit-log.model"
+export { default as KEYLOG } from "./key-log.model"
