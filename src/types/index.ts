@@ -1,6 +1,6 @@
 export type VoidFunction = () => void;
 
-export type UserRoles = "hall-tutor" | "chief-porter" | "porter"
+export type UserRoles = "SUDO" | "ADMIN" | "PORTER"
 export type KeyStatus = "assigned" | "unassigned" | "missing" | "unknown"
 
 export interface MailData {
