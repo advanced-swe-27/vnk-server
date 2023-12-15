@@ -1,8 +1,9 @@
-import mongoose, { Schema } from 'mongoose';
+import  { Schema, model, SchemaTypes } from 'mongoose';
 
-const KEYLOGSCHEMA = new Schema({
+
+const KeyLogSchema = new Schema({
     room: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: SchemaTypes.ObjectId,
         ref: "Room",
         required: [true, "Room field is required"],
     },
@@ -15,7 +16,7 @@ const KEYLOGSCHEMA = new Schema({
         default: null
     },
     resident: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: SchemaTypes.ObjectId,
         ref: "Resident",
         required: [true, "Resident field is required"],
     }
@@ -23,6 +24,4 @@ const KEYLOGSCHEMA = new Schema({
     timestamps: true
 })
 
-const KEYLOG = mongoose.model("KeyLog", KEYLOGSCHEMA)
-
-export default KEYLOG
+export const KeyLogModel = model<any>("KeyLog", KeyLogSchema);

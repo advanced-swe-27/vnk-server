@@ -1,8 +1,8 @@
-import mongoose, { Schema } from 'mongoose';
+import  { Schema, model, SchemaTypes } from 'mongoose';
 
-const VISITLOGSCHEMA = new Schema({
+const VisitLogSchema = new Schema({
     visitor: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: SchemaTypes.ObjectId,
         ref: "Visitor",
         required: [true, "Visitor field is required"],
     },
@@ -15,7 +15,7 @@ const VISITLOGSCHEMA = new Schema({
         default: null
     },
     place: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: SchemaTypes.ObjectId,
         required: [true, "Place field is required"],
         refPath: 'placeModel'
     },
@@ -29,14 +29,11 @@ const VISITLOGSCHEMA = new Schema({
         required: true
     },
     visitee: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: SchemaTypes.ObjectId,
         ref: "Resident",
         required: [true, "Visitee field is required"],
     }
 }, {
     timestamps: true
 })
-
-const VISITLOG = mongoose.model("VisitLog", VISITLOGSCHEMA)
-
-export default VISITLOG
+export const VisitLogModel = model<any>("VisitLog", VisitLogSchema);

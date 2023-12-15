@@ -1,6 +1,7 @@
-import mongoose, { Schema } from 'mongoose';
+import  { Schema, model, SchemaTypes } from 'mongoose';
 
-const ROOMSCHEMA = new Schema({
+
+const RoomSchema = new Schema({
     number: {
         type: String,
         required: [true, "Room number field is required"],
@@ -16,7 +17,7 @@ const ROOMSCHEMA = new Schema({
         enum: ["male" , "female"]
     },
     key: [{
-        type: mongoose.Schema.Types.ObjectId,
+        type: SchemaTypes.ObjectId,
         ref: "Key",
         required: [true, "Key field is required"],
     }
@@ -25,6 +26,4 @@ const ROOMSCHEMA = new Schema({
     timestamps: true
 })
 
-const ROOM = mongoose.model("Room", ROOMSCHEMA)
-
-export default ROOM
+export const RoomModel = model<any>("Room", RoomSchema);

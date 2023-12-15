@@ -1,48 +1,47 @@
-import mongoose, { Schema } from 'mongoose';
+import { Schema, model, SchemaTypes } from "mongoose";
 
-const VISITORSCHEMA = new Schema({
+
+const VisitorSchema = new Schema({
     surname: {
-        type: String,
+        type: SchemaTypes.String,
         required: [true, "Surname field is required"],
         minLength: [3, 'Surname field must be at least 3 characters long'],
     },
     othernames: {
-        type: String,
+        type: SchemaTypes.String,
         required: [true, "Othernames field is required"],
         minLength: [3, 'Othernames field must be at least 3 characters long'],
     },
     email: {
-        type: String,
+        type: SchemaTypes.String,
         required: [true, "Email field is required"],
         minLength: [3, 'Email field must be at least 3 characters long'],
     },
     phone: {
-        type: String,
+        type: SchemaTypes.String,
         required: [true, "Phone field is required"],
         minLength: [8, 'Phone field must be at least 8 characters long'],
     },
     residence: {
-        type: String,
+        type: SchemaTypes.String,
         required: [true, "Residence field is required"],
         minLength: [8, 'Residence field must be at least 8 characters long'],
     }, 
     sid: {
-        type: String,
+        type: SchemaTypes.String,
         default: null
     },
     isStudent: {
-        type: Boolean,
+        type: SchemaTypes.Boolean,
         default: true
     },
     flagged: {
-        type: Boolean,
+        type: SchemaTypes.Boolean,
         default: false
     },
 
 }, {
     timestamps: true
 })
+export const VisitorModel = model<any>("Visitor", VisitorSchema);
 
-const VISITOR = mongoose.model("Visitor", VISITORSCHEMA)
-
-export default VISITOR

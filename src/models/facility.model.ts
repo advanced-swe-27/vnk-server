@@ -1,20 +1,20 @@
-import mongoose, { Schema } from 'mongoose';
+import  { Schema, model, SchemaTypes } from 'mongoose';
 
-const FACILITYSCHEMA = new Schema({
+
+const FacilitySchema = new Schema({
     status: {
         type: String,
-        required: [true, "Gender field is required"],
+        required: [true, "Status field is required"],
         enum: ["assigned" , "unassigned" , "missing" , "unknown"]
     },
     room: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: SchemaTypes.ObjectId,
         ref: "Room",
-        required: [true, "Phone field is required"],
+        required: [true, "Room field is required"],
     },
 }, {
     timestamps: true
 })
 
-const FACILITY = mongoose.model("Facility", FACILITYSCHEMA)
+export const FacilityModel = model<any>("Facility", FacilitySchema);
 
-export default FACILITY

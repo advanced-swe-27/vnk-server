@@ -1,48 +1,101 @@
-import mongoose, { Schema } from 'mongoose';
+import { Schema, model, SchemaTypes } from "mongoose";
+import { __generateAuthToken } from "../helpers/token";
+import { __genCode } from "../helpers/string";
+import dayjs from "dayjs";
+import bcrypt from "bcrypt"
 
-const USERSCHEMA = new Schema({
+const UserSchema = new Schema({
     surname: {
-        type: String,
-        required: [true, "Surname field is required"],
-        minLength: [3, 'Surname field must be at least 3 characters long'],
+        type: SchemaTypes.String,
+        required: true,
     },
     othernames: {
-        type: String,
-        required: [true, "Othernames field is required"],
-        minLength: [3, 'Othernames field must be at least 3 characters long'],
+        type: SchemaTypes.String,
+        required: true,
     },
     email: {
-        type: String,
-        required: [true, "Email field is required"],
-        minLength: [3, 'Email field must be at least 3 characters long'],
+        type: SchemaTypes.String,
+        required: true,
+        unique: true
     },
     password: {
-        type: String,
-        required: [true, "Password field is required"],
-        minLength: [3, 'Password field must be at least 3 characters long'],
+        type: SchemaTypes.String,
+        required: true,
     }, 
     role: {
-        type: String,
-        enum: ["hall-tutor", "chief-porter", "porter"],
-        default: "porter"
-    },
-    token: {
-        type: String,
-        default: null
+        type: SchemaTypes.String,
+        enum: ["SUDO" , "ADMIN" , "PORTER"],
+        default: "PORTER"
     },
     phone: {
-        type: String,
-        required: [true, "Phone field is required"],
-        minLength: [8, 'Phone field must be at least 8 characters long'],
+        type: SchemaTypes.String,
+        required: true,
+        unique: true
     },
-    isFirstLogin: {
-        type: Boolean,
-        default: false
-    }
+    verification: {
+        type: new Schema({
+            code: {
+                type: SchemaTypes.String,
+                required: true,
+                default: function () {
+                    return __genCode(6);
+                },
+            },
+            expiresAt: {
+                type: SchemaTypes.Date,
+                required: true,
+                default: function () {
+                    return dayjs().add(10, "minutes");
+                }
+            }
+        }),
+        required: false,
+    },
+    meta: {
+        isFirstLogin: {
+            type: SchemaTypes.Boolean,
+            default: true,
+            required: true
+        },
+        isSuspended: {
+            type: SchemaTypes.Boolean,
+            default: false,
+            required: true
+        }
+    },
+    token: {
+        type: SchemaTypes.String,
+        default: null
+    },
 }, {
     timestamps: true
 })
 
-const USER = mongoose.model("User", USERSCHEMA)
+UserSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) return next();
+    try {
+        let salt = await bcrypt.genSalt(10);
+        let hash = await bcrypt.hash(this.password, salt)
+        this.password = hash;
+        next();
+    } catch (err: any) {
+        next(err);
+    }
+})
 
-export default USER
+UserSchema.methods.comparePasswords = async function (password: string): Promise<boolean> {
+    return await bcrypt.compare(password, this.password);
+}
+
+UserSchema.methods.generateAuthToken = async function (): Promise<string> {
+    let __token: string = await __generateAuthToken({
+        id: this._id,
+        email: this.email,
+        type: this.role,
+        isSuspended: this.meta.isSuspended
+    })
+    return __token
+}
+
+
+export const UserModel = model<any>("User", UserSchema);

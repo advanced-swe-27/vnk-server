@@ -1,13 +1,14 @@
-import mongoose, { Schema } from 'mongoose';
+import  { Schema, model, SchemaTypes } from 'mongoose';
 
-const KEYSCHEMA = new Schema({
+
+const KeySchema = new Schema({
     status: {
         type: String,
         required: [true, "Gender field is required"],
         enum: ["assigned" , "unassigned" , "missing" , "unknown"]
     },
     room: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: SchemaTypes.ObjectId,
         ref: "Room",
         required: [true, "Phone field is required"],
     },
@@ -15,6 +16,4 @@ const KEYSCHEMA = new Schema({
     timestamps: true
 })
 
-const KEY = mongoose.model("Key", KEYSCHEMA)
-
-export default KEY
+export const KeyModel = model<any>("Key", KeySchema);
