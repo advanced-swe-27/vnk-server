@@ -105,3 +105,33 @@ export type FacilityRes = Facility & MongoResponse
 export type KeyRes = Key & MongoResponse
 export type VisitLogRes = VisitLog & MongoResponse
 export type KeyLogRes = KeyLog & MongoResponse
+
+
+export type CreateUserInput = {
+    othernames: string
+    surname: string
+    email: string
+    phone: string
+    // role: UserRoles
+}
+
+export type LoginUserInput = {
+    email: string
+    password: string
+}
+
+export type ChangePasswordInput = {
+    email: string
+    oldPassword: string
+    newPassword: string
+}
+
+export type ResetPasswordInput = Pick<ChangePasswordInput, "newPassword"> & {
+    email: string
+}
+
+export type SendCodeInput = Pick<LoginUserInput, "email">
+
+export type VerifyCodeInput = SendCodeInput & {
+    code: string
+}

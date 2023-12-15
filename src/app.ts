@@ -5,6 +5,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { ErrorHandler, NotFound } from './middlewares';
 import { IMessageResponse } from './interfaces';
+import { AuthRoute, PorterRoute, ChiefPorterRoute, HallTutorRoute } from './routes';
 
 
 require('dotenv').config();
@@ -26,7 +27,10 @@ app.get<{}, IMessageResponse>('/api', (req, res) => {
 
 // Routes
 
-app.use('/api/', () => {});
+app.use('/api/porter', PorterRoute);
+app.use('/api/chief-porter', ChiefPorterRoute);
+app.use('/api/hall-tutor', HallTutorRoute);
+app.use('/api/auth', AuthRoute);
 
 
 // Middlewares
