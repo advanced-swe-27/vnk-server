@@ -57,3 +57,65 @@ export async function createChiefPorter(req: Request<{}, {}, CreateUserInput>, r
         next(error)
     }
 }
+
+export async function getAllChiefPorters(req: Request, res: Response, next: NextFunction) {
+    try {
+        const rooms = await UserModel.find({role: "ADMIN"})
+
+        res.status(200).json({
+            success: true,
+            message: 'Rooms fetched successfully',
+            data: rooms,
+        });
+    } catch (error) {
+        next(error)
+    }
+}
+
+export async function getChiefPorterById(req: Request<{ id: string }>, res: Response, next: NextFunction) {
+    const { id } = req.params
+    try {
+        if (!id) {
+            return next(createError(400, 'Provide room id'));
+        }
+
+        const room = await UserModel.findById(id)
+
+        if (!room) {
+            return next(createError(404, "Room not found"))
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'Room fetched successfully',
+            data: room,
+        });
+    } catch (error) {
+        next(error)
+    }
+}
+
+export async function deleteChiefPorter(req: Request<{ id: string }>, res: Response, next: NextFunction) {
+    const { id } = req.params
+    try {
+        if (!id) {
+            return next(createError(400, 'Provide room id'));
+        }
+
+        const room = await UserModel.findById(id)
+
+        if (!room) {
+            return next(createError(404, "Room not found"))
+        }
+
+        const deletedRoom = await UserModel.findByIdAndDelete(id)
+
+        res.status(200).json({
+            success: true,
+            message: 'Room fetched successfully',
+            data: deletedRoom,
+        });
+    } catch (error) {
+        next(error)
+    }
+}

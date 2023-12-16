@@ -4,7 +4,7 @@ import { UserModel } from "../models"
 import { NextFunction, Request, Response } from 'express';
 import { createError } from "../utils";
 import { sendMail } from "./mailer";
-import { CreateUserInput, ChangePasswordInput } from "../types";
+import { CreateUserInput, ChangePasswordInput, User } from "../types";
 
 export async function updateUserPassword(req: Request<{}, {}, ChangePasswordInput>, res: Response, next: NextFunction) {
     const { oldPassword, newPassword } = req.body
@@ -53,3 +53,34 @@ export async function updateUserPassword(req: Request<{}, {}, ChangePasswordInpu
 }
 
 
+export async function updateUser(req: Request<{ id: string }, {}, Pick<User, "surname" | "othernames" | "phone" >>, res: Response, next: NextFunction) {
+    const { id } = req.params
+    const { surname, othernames, phone } = req.body
+    try {
+        if (!id) {
+            return next(createError(400, 'Provide room id'));
+        }
+
+        const room = await UserModel.findById(id)
+
+        if (!room) {
+            return next(createError(404, "Room not found"))
+        }
+
+        const deletedRoom = await UserModel.findByIdAndUpdate(id, {
+            surname,
+            othernames,
+            phone,
+        }, {
+            new: true
+        })
+
+        res.status(200).json({
+            success: true,
+            message: 'Room update successfully',
+            data: deletedRoom,
+        });
+    } catch (error) {
+        next(error)
+    }
+}
