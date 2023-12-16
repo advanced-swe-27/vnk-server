@@ -46,6 +46,21 @@ const ResidentSchema = new Schema({
         required: [true, "Programme field is required"],
         minLength: [8, 'Programme field must be at least 8 characters long'],
     },
+    room: {
+        type: SchemaTypes.ObjectId,
+        ref: "Room"
+    },
+    gender: {
+        type: SchemaTypes.String,
+        enum: ["MALE" , "FEMALE"],
+        required: true
+    },
+    status: {
+        type: SchemaTypes.String,
+        enum: ["approved" , "pending" , "rejected"],
+        default: "pending"
+    },
+
 }, {
     timestamps: true
 })

@@ -5,7 +5,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { ErrorHandler, NotFound } from './middlewares';
 import { IMessageResponse } from './interfaces';
-import { AuthRoute, PorterRoute, ChiefPorterRoute, HallTutorRoute } from './routes';
+import { AuthRoute, PorterRoute, ChiefPorterRoute, HallTutorRoute, RoomRoute, FacilityRoute, KeyLogRoute,KeyRoute, ResidentRoute, VisitLogRoute, VisitorRoute } from './routes';
 
 
 require('dotenv').config();
@@ -24,13 +24,19 @@ app.get<{}, IMessageResponse>('/api', (req, res) => {
   });
 });
 
-
 // Routes
 
 app.use('/api/porter', PorterRoute);
 app.use('/api/chief-porter', ChiefPorterRoute);
 app.use('/api/hall-tutor', HallTutorRoute);
 app.use('/api/auth', AuthRoute);
+app.use('/api/room', RoomRoute);
+app.use('/api/facility', FacilityRoute);
+app.use('/api/key-log', KeyLogRoute);
+app.use('/api/key', KeyRoute);
+app.use('/api/resident', ResidentRoute);
+app.use('/api/visit-log', VisitLogRoute);
+app.use('/api/visitor', VisitorRoute);
 
 
 // Middlewares

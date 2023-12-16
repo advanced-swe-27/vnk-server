@@ -4,7 +4,7 @@ import { UserModel } from "../models"
 import { NextFunction, Request, Response } from 'express';
 import { createError } from "../utils";
 import { sendMail } from "./mailer";
-import { CreateUserInput, ChangePasswordInput } from "../types";
+import { CreateUserInput } from "../types";
 
 
 export async function createPorter(req: Request<{}, {}, CreateUserInput>, res: Response, next: NextFunction) {

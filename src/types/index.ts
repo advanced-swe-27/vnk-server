@@ -2,6 +2,7 @@ export type VoidFunction = () => void;
 
 export type UserRoles = "SUDO" | "ADMIN" | "PORTER"
 export type KeyStatus = "assigned" | "unassigned" | "missing" | "unknown"
+export type ResidentStatus = "pending" | "approved" | "rejected"
 
 export interface MailData {
     name?: string;
@@ -19,6 +20,8 @@ export interface MailData {
         address: string;
     }
 }
+
+export type Gender = "MALE" | "FEMALE"
 
 export type Level = "100" | "200" | "300" | "400" | "500" | "600" | "700"
 
@@ -51,6 +54,9 @@ export type Resident = {
     level: Level
     imageUrl: string
     phone: string
+    gender: Gender
+    status: ResidentStatus
+    room: string | Room
 }
 
 export type Visitor = {
@@ -65,10 +71,9 @@ export type Visitor = {
 }
 
 export type Room = {
-    number: string
+    num: string
     capacity: number
-    gender: "male" | "female"
-    key: string | Key
+    gender: Gender
 }
 
 export type Facility = {
@@ -135,3 +140,4 @@ export type SendCodeInput = Pick<LoginUserInput, "email">
 export type VerifyCodeInput = SendCodeInput & {
     code: string
 }
+

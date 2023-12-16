@@ -5,7 +5,8 @@ const KeySchema = new Schema({
     status: {
         type: String,
         required: [true, "Gender field is required"],
-        enum: ["assigned" , "unassigned" , "missing" , "unknown"]
+        enum: ["assigned", "unassigned", "missing", "unknown"],
+        default: "unassigned"
     },
     room: {
         type: SchemaTypes.ObjectId,
