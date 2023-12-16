@@ -38,7 +38,7 @@ export async function __generateAuthToken(payload: TokenPayload): Promise<string
 				{
 					audience: config.app.name,
 					issuer: config.app.name,
-					expiresIn: config.auth.access.expiry,
+					expiresIn: config.auth.access.expiry || ms("10m"),
 				},
 				function (err, token) {
 					if (err) reject(err);
