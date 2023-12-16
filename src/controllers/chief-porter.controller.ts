@@ -68,6 +68,7 @@ export async function getAllChiefPorters(req: Request, res: Response, next: Next
             data: rooms,
         });
     } catch (error) {
+        console.log(error)
         next(error)
     }
 }

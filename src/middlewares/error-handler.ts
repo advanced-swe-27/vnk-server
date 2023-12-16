@@ -10,6 +10,8 @@ const errorHandler = (err: any, req: Request, res: Response<IErrorResponse>, nex
     message,
     stack: process.env.NODE_ENV === 'production' ? '🎈' : err.stack,
   });
+  // console.log(err, res)
+
 };
 
 export default errorHandler;

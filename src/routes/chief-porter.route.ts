@@ -6,11 +6,12 @@ import { updateUserPassword } from '../controllers/user.controller';
 //  /porter
 const router = Router();
 
+
 router.post("/", VerifyAccess, VerifySudo, createChiefPorter)
 router.post("/change-password", VerifyAccess, VerifyChiefPorter, updateUserPassword)
 
-router.get("/", VerifyAccess, VerifySudo,  getAllChiefPorters)
 router.get("/:id", VerifyAccess, VerifySudo, getChiefPorterById)
+router.get("/", VerifyAccess, VerifySudo, getAllChiefPorters)
 
 router.delete("/:id", VerifyAccess, VerifySudo,  deleteChiefPorter)
 

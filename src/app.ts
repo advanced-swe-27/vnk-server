@@ -27,7 +27,7 @@ app.get<{}, IMessageResponse>('/api', (req, res) => {
 // Routes
 
 app.use('/api/porter', PorterRoute);
-app.use('/api/chief-porter', ChiefPorterRoute);
+app.use('/api/chief', ChiefPorterRoute);
 app.use('/api/hall-tutor', HallTutorRoute);
 app.use('/api/auth', AuthRoute);
 app.use('/api/room', RoomRoute);
