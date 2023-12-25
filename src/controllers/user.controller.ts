@@ -4,7 +4,7 @@ import { UserModel } from "../models"
 import { NextFunction, Request, Response } from 'express';
 import { createError } from "../utils";
 import { sendMail } from "./mailer";
-import { CreateUserInput, ChangePasswordInput, User } from "../types";
+import { CreateUserInput, ChangePasswordInput, User, UpdateUserDetailsInput } from "../types";
 
 export async function updateUserPassword(req: Request<{}, {}, ChangePasswordInput>, res: Response, next: NextFunction) {
     const { oldPassword, newPassword } = req.body
@@ -53,21 +53,28 @@ export async function updateUserPassword(req: Request<{}, {}, ChangePasswordInpu
 }
 
 
-export async function updateUser(req: Request<{ id: string }, {}, Pick<User, "surname" | "othernames" | "phone" >>, res: Response, next: NextFunction) {
-    const { id } = req.params
+export async function updateUser(req: Request<{ }, {}, UpdateUserDetailsInput>, res: Response, next: NextFunction) {
+    const { user: _user } = req
     const { surname, othernames, phone } = req.body
     try {
-        if (!id) {
-            return next(createError(400, 'Provide room id'));
+      
+
+        if (!surname || !othernames || !phone) {
+            return next(createError(400, 'Provide all required fields'));
+            
         }
 
-        const room = await UserModel.findById(id)
+        const userExists = await UserModel.findById(_user?.id)
 
-        if (!room) {
-            return next(createError(404, "Room not found"))
+        if (!userExists) {
+            return next(createError(404, "User not found"))
         }
 
-        const deletedRoom = await UserModel.findByIdAndUpdate(id, {
+        if (userExists?.meta?.isSuspended) {
+            return next(createError(401, "Account has been suspended"))
+        }
+
+        const updatedUser = await UserModel.findByIdAndUpdate(userExists?._id, {
             surname,
             othernames,
             phone,
@@ -77,8 +84,8 @@ export async function updateUser(req: Request<{ id: string }, {}, Pick<User, "su
 
         res.status(200).json({
             success: true,
-            message: 'Room update successfully',
-            data: deletedRoom,
+            message: 'User updated successfully',
+            data: updatedUser,
         });
     } catch (error) {
         next(error)

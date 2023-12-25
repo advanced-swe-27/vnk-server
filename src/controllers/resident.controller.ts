@@ -234,9 +234,23 @@ export async function changeResidentRoom(req: Request<{ id: string }, {}, { room
             return next(createError(404, "Room not found"))
         }
 
+        // check if room is full
+        const roommates = await ResidentModel.find({ room })
+
+        // console.log(roommates)
+
+        if (roommates?.length >= roomExists?.capacity) {
+            return next(createError(409, 'This room is already full'));
+        }
+
+        // check if gender is the same as the room gender
+        if (resident?.gender !== roomExists?.gender) {
+            return next(createError(409, 'Your gender does not match this rooms gender'));
+        }
+
         const modifiedResident = await ResidentModel.findByIdAndUpdate(id, {
             room
-        }, { new: true })
+        }, { new: true }).populate("room")
 
         res.status(200).json({
             success: true,

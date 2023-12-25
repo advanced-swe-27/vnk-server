@@ -6,7 +6,7 @@ import { EmailTemplates, sendMail } from "./mailer";
 import { createError } from "../utils";
 import { NextFunction, Request, Response } from 'express';
 import { UserModel } from "../models";
-import { LoginUserInput, ResetPasswordInput, SendCodeInput, VerifyCodeInput } from "../types";
+import { LoginUserInput, ResetPasswordInput, SendCodeInput, UpdateUserDetailsInput, VerifyCodeInput } from "../types";
 
 
 export async function loginUser(req: Request<{}, {}, LoginUserInput>, res: Response, next: NextFunction) {
@@ -301,3 +301,4 @@ export async function verifyUserCode(req: Request<{}, {}, VerifyCodeInput>, res:
     }
 
 }
+
