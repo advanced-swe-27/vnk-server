@@ -7,7 +7,7 @@ const router = Router();
 
 router.post("/", VerifyAccess, VerifySudo, createRoom)
 
-router.get("/", VerifyAccess, getAllRooms)
+router.get("/",  getAllRooms)
 router.get("/:id", VerifyAccess, getRoomById)
 
 router.put("/:id", VerifyAccess, VerifySudo, updateRoom)

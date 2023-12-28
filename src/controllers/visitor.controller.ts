@@ -9,7 +9,7 @@ export async function createVisitor(req: Request<{}, {}, Visitor>, res: Response
     const { email, isStudent, othernames, phone, residence, surname, sid } = req.body
     // console.log({ email, isStudent, othernames, phone, residence, surname, sid })
     try {
-        if (!email  || !othernames || !phone || !surname || !sid || !residence) {
+        if (!email  || !othernames || !phone || !surname  || !residence) {
             return next(createError(400, 'Provide all required fields'));
         } 
         
@@ -154,7 +154,7 @@ export async function unflagVisitor(req: Request<{ id: string }, {}, {}>, res: R
         const visitor = await VisitorModel.findById(id)
 
         if (!visitor) {
-            return next(createError(404, "visitor not found"))
+            return next(createError(404, "Visitor not found"))
         }
 
         const deletedVisitor = await VisitorModel.findByIdAndUpdate(id, {

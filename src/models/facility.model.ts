@@ -2,14 +2,12 @@ import  { Schema, model, SchemaTypes } from 'mongoose';
 
 
 const FacilitySchema = new Schema({
-    status: {
+    name: {
         type: String,
         required: [true, "Status field is required"],
-        enum: ["assigned" , "unassigned" , "missing" , "unknown"]
     },
-    room: {
-        type: SchemaTypes.ObjectId,
-        ref: "Room",
+    description: {
+        type: String,
         required: [true, "Room field is required"],
     },
 }, {

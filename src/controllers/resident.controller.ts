@@ -3,7 +3,7 @@ import { __genPassword } from "../helpers/string";
 import { ResidentModel, RoomModel } from "../models"
 import { NextFunction, Request, Response } from 'express';
 import { createError } from "../utils";
-import {  Resident } from "../types";
+import { Resident } from "../types";
 
 export async function createResident(req: Request<{}, {}, Resident>, res: Response, next: NextFunction) {
     const { dob, email, imageUrl, level, othernames, phone, programme, sid, surname, gender, room } = req.body
@@ -29,7 +29,7 @@ export async function createResident(req: Request<{}, {}, Resident>, res: Respon
         }
 
         // check if room is full
-        const roommates = await ResidentModel.find({ room })
+        const roommates = await ResidentModel.find({ room, status: { $ne: "rejected" } })
 
         // console.log(roommates)
 
@@ -86,6 +86,22 @@ export async function getAllResidents(req: Request, res: Response, next: NextFun
     }
 }
 
+export async function getAcceptedResidents(req: Request, res: Response, next: NextFunction) {
+    try {
+        const residents = await ResidentModel.find({ status: "approved" }).populate("room")
+
+        res.status(200).json({
+            success: true,
+            message: 'Residents fetched successfully',
+            data: residents,
+        });
+    } catch (error) {
+        next(error)
+    }
+}
+
+
+
 export async function getResidentById(req: Request<{ id: string }>, res: Response, next: NextFunction) {
     const { id } = req.params
     try {
@@ -113,16 +129,16 @@ export async function getResidentByRoom(req: Request<{ id: string }>, res: Respo
     const { id } = req.params
     try {
         if (!id) {
-            return next(createError(400, 'Provide resident id'));
+            return next(createError(400, 'Provide room id'));
         }
 
         const room = await RoomModel.findById(id)
 
         if (!room) {
-            return next(createError(404, "Resident not found"))
+            return next(createError(404, "Room not found"))
         }
 
-        const roommates = await ResidentModel.find({ room }).populate("room")
+        const roommates = await ResidentModel.find({ room, status: { $ne: "rejected" } }).populate("room")
 
         res.status(200).json({
             success: true,
@@ -200,9 +216,12 @@ export async function rejectResident(req: Request<{ id: string }>, res: Response
             return next(createError(404, "Resident not found"))
         }
 
+        // remove room
+
+
         const rejectedResident = await ResidentModel.findByIdAndUpdate(id, {
-            status: "rejected"
-        }, { new: true })
+            status: "rejected",
+        }, { new: true }).populate("room")
 
         res.status(200).json({
             success: true,
@@ -235,7 +254,7 @@ export async function changeResidentRoom(req: Request<{ id: string }, {}, { room
         }
 
         // check if room is full
-        const roommates = await ResidentModel.find({ room })
+        const roommates = await ResidentModel.find({ room, status: { $ne: "rejected" } })
 
         // console.log(roommates)
 

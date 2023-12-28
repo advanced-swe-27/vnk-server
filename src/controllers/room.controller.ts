@@ -1,6 +1,5 @@
 import _ from "lodash"
-import { __genPassword } from "../helpers/string";
-import {  RoomModel, KeyModel } from "../models"
+import {  RoomModel, KeyModel, ResidentModel } from "../models"
 import { NextFunction, Request, Response } from 'express';
 import { createError } from "../utils";
 import { Room } from "../types";
@@ -128,11 +127,18 @@ export async function deleteRoom(req: Request<{ id: string }>, res: Response, ne
             return next(createError(404, "Room not found"))
         }
 
+         // check if room has residents
+        const roommates = await ResidentModel.find({ room })
+        
+        if (roommates?.length > 0) {
+            return next(createError(409, "There are residents in this room"))
+        }
+
         const deletedRoom = await RoomModel.findByIdAndDelete(id)
 
         res.status(200).json({
             success: true,
-            message: 'Room fetched successfully',
+            message: 'Room deleted successfully',
             data: deletedRoom,
         });
     } catch (error) {

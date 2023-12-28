@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { VerifyAccess, VerifyAdmin, VerifyPorter, VerifySudo } from '../middlewares';
-import { createResident, deleteResident, getAllResidents, getResidentById, getResidentByRoom, approveResident, rejectResident, changeResidentRoom} from '../controllers/resident.controller';
+import { createResident, deleteResident, getAllResidents, getResidentById, getResidentByRoom, approveResident, rejectResident, changeResidentRoom, getAcceptedResidents} from '../controllers/resident.controller';
 
 //  /resident
 const router = Router();
@@ -8,6 +8,7 @@ const router = Router();
 router.post("/", createResident)
 
 router.get("/", VerifyAccess, getAllResidents)
+router.get("/accepted", VerifyAccess, getAcceptedResidents)
 router.get("/:id", VerifyAccess, getResidentById)
 router.get("/room/:id", VerifyAccess, getResidentByRoom)
 

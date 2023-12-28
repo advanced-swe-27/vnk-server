@@ -6,33 +6,15 @@ const VisitLogSchema = new Schema({
         ref: "Visitor",
         required: [true, "Visitor field is required"],
     },
-    checkin: {
-        type: Date,
-        required: [true, "Checkin field is required"],
-    },
     checkout: {
         type: Date,
         default: null
     },
-    place: {
+    room: {
         type: SchemaTypes.ObjectId,
-        required: [true, "Place field is required"],
-        refPath: 'placeModel'
+        required: [true, "Room field is required"],
+        ref: 'Room'
     },
-    placeModel: {
-        type: String,
-        enum: ['Room', 'Facility'], // Specify the possible values for placeModel
-        required: true
-    },
-    isVisitingResident: {
-        type: Boolean,
-        required: true
-    },
-    visitee: {
-        type: SchemaTypes.ObjectId,
-        ref: "Resident",
-        required: [true, "Visitee field is required"],
-    }
 }, {
     timestamps: true
 })

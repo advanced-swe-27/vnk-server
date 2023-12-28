@@ -88,17 +88,14 @@ export type Key = {
 
 export type VisitLog = {
     visitor: string | Visitor
-    checkin: Date
     checkout: Date
-    place: string | Room | Facility
-    isVisitingResident: boolean
-    visitee?: string | Resident
+    room: string | Room 
 }
 
 export type KeyLog = {
-    resident: string | Resident
-    checkin: Date
-    checkout: Date
+    closedBy: string | Resident
+    openedBy: string | Resident
+    closedAt: Date
     room: string | Room
 }
 

@@ -7,18 +7,19 @@ const KeyLogSchema = new Schema({
         ref: "Room",
         required: [true, "Room field is required"],
     },
-    checkin: {
-        type: Date,
-        required: [true, "Checkin field is required"],
-    },
-    checkout: {
-        type: Date,
-        default: null
-    },
-    resident: {
+    openedBy: {
         type: SchemaTypes.ObjectId,
         ref: "Resident",
         required: [true, "Resident field is required"],
+    },
+    closedAt: {
+        type: Date,
+        default: null
+    },
+    closedBy: {
+        type: SchemaTypes.ObjectId,
+        ref: "Resident",
+        default: null
     }
 }, {
     timestamps: true

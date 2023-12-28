@@ -1,11 +1,15 @@
 import { Router } from 'express';
-import { VerifyAccess, VerifyAdmin, VerifyPorter, VerifySudo } from '../middlewares';
-import {  } from '../controllers/resident.controller';
+import { VerifyAccess } from '../middlewares';
+import { closeVisitLog, createVisitLog, deleteVisitLog, getAllVisitLogs, getVisitLogById, getVisitLogByRoom } from '../controllers/visit-log.controller';
 
-//  /resident
+// /visit-log
 const router = Router();
 
-router.post("/", )
-
+router.post("/", VerifyAccess, createVisitLog);
+router.patch("/:id", VerifyAccess, closeVisitLog);
+router.get("/", VerifyAccess, getAllVisitLogs);
+router.get("/:id", VerifyAccess, getVisitLogById);
+router.get("/room/:id", VerifyAccess, getVisitLogByRoom);
+router.delete("/:id", VerifyAccess, deleteVisitLog);
 
 export default router;

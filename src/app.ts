@@ -5,7 +5,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { ErrorHandler, NotFound } from './middlewares';
 import { IMessageResponse } from './interfaces';
-import { AuthRoute, PorterRoute, ChiefPorterRoute, HallTutorRoute, RoomRoute, FacilityRoute, KeyLogRoute,KeyRoute, ResidentRoute, VisitLogRoute, VisitorRoute } from './routes';
+import { AuthRoute, PorterRoute, ChiefPorterRoute, HallTutorRoute, RoomRoute, FacilityRoute, KeyLogRoute,KeyRoute, ResidentRoute, VisitLogRoute, VisitorRoute, PublicRoute } from './routes';
 
 
 require('dotenv').config();
@@ -37,6 +37,7 @@ app.use('/api/key', KeyRoute);
 app.use('/api/resident', ResidentRoute);
 app.use('/api/visit-log', VisitLogRoute);
 app.use('/api/visitor', VisitorRoute);
+app.use('/api/public', PublicRoute);
 
 
 // Middlewares
